@@ -1,0 +1,47 @@
+.stories {
+  padding: 16px 0;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--ig-border);
+}
+
+.stories__list {
+  display: flex;
+  gap: 16px;
+  list-style: none;
+  margin: 0;
+  padding: 0 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.stories__list::-webkit-scrollbar {
+  display: none;
+}
+
+.stories__item {
+  flex-shrink: 0;
+  width: 74px;
+}
+
+.stories__btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+}
+
+.stories__name {
+  font-size: 0.75rem;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}

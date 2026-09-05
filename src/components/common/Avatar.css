@@ -1,0 +1,48 @@
+.avatar {
+  display: inline-flex;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--ig-bg-secondary);
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 50%;
+}
+
+.avatar--sm {
+  width: 32px;
+  height: 32px;
+}
+
+.avatar--md {
+  width: 44px;
+  height: 44px;
+}
+
+.avatar--lg {
+  width: 66px;
+  height: 66px;
+}
+
+.avatar--xl {
+  width: 150px;
+  height: 150px;
+}
+
+.avatar--ring {
+  padding: 2px;
+  background: var(--ig-story-gradient);
+}
+
+.avatar--ring img {
+  border: 2px solid var(--ig-bg);
+}
+
+.avatar--seen {
+  background: var(--ig-border);
+}

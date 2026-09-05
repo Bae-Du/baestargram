@@ -1,0 +1,31 @@
+.bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  inset-inline: 0;
+  height: var(--ig-bottom-nav);
+  background: var(--ig-bg);
+  border-top: 1px solid var(--ig-border);
+  z-index: 50;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bottom-nav__link {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ig-text);
+  text-decoration: none;
+}
+
+.bottom-nav__icon {
+  width: 24px;
+  height: 24px;
+}
+
+@media (max-width: 767px) {
+  .bottom-nav {
+    display: flex;
+  }
+}

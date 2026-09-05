@@ -1,0 +1,18 @@
+.app-layout {
+  display: flex;
+  min-height: 100svh;
+  background: var(--ig-bg);
+  color: var(--ig-text);
+}
+
+.app-layout__main {
+  flex: 1;
+  min-width: 0;
+  padding-bottom: 0;
+}
+
+@media (max-width: 767px) {
+  .app-layout__main {
+    padding-bottom: calc(var(--ig-bottom-nav) + env(safe-area-inset-bottom));
+  }
+}

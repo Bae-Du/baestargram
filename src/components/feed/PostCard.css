@@ -1,0 +1,107 @@
+.post {
+  border-bottom: 1px solid var(--ig-border);
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+}
+
+.post__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 4px 12px;
+}
+
+.post__user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.post__username {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.post__time {
+  margin: 2px 0 0;
+  font-size: 0.75rem;
+  color: var(--ig-text-secondary);
+}
+
+.post__more {
+  border: none;
+  background: transparent;
+  padding: 8px;
+  cursor: pointer;
+  color: inherit;
+}
+
+.post__media {
+  background: var(--ig-bg-secondary);
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.post__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.post__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 4px 4px;
+}
+
+.post__actions-left {
+  display: flex;
+  gap: 4px;
+}
+
+.post__action {
+  border: none;
+  background: transparent;
+  padding: 6px;
+  cursor: pointer;
+  color: inherit;
+  display: inline-flex;
+}
+
+.post__action--liked {
+  color: var(--ig-like);
+}
+
+.post__action-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.post__body {
+  padding: 0 8px 4px;
+}
+
+.post__likes {
+  margin: 0 0 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.post__caption {
+  margin: 0 0 6px;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.post__comments-link {
+  border: none;
+  background: transparent;
+  padding: 0;
+  color: var(--ig-text-secondary);
+  font-size: 0.875rem;
+  cursor: pointer;
+}

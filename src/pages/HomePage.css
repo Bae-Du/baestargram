@@ -1,0 +1,32 @@
+.home-page {
+  width: 100%;
+  max-width: 630px;
+  margin: 0 auto;
+}
+
+.home-page__mobile-header {
+  display: none;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  padding: 10px 16px;
+  background: var(--ig-bg);
+  border-bottom: 1px solid var(--ig-border);
+}
+
+.home-page__logo {
+  margin: 0;
+  font-family: var(--ig-logo-font);
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+.home-page__feed {
+  padding: 0 0 24px;
+}
+
+@media (max-width: 767px) {
+  .home-page__mobile-header {
+    display: block;
+  }
+}
