@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { currentUser } from '../../data/mock'
+import { useAuth } from '../../auth/AuthContext'
 import {
   CreateIcon,
   HomeIcon,
@@ -19,6 +19,9 @@ const links = [
 ]
 
 export function Sidebar() {
+  const { user } = useAuth()
+  if (!user) return null
+
   return (
     <aside className="sidebar">
       <div className="sidebar__brand">
@@ -52,7 +55,7 @@ export function Sidebar() {
             `sidebar__link${isActive ? ' sidebar__link--active' : ''}`
           }
         >
-          <Avatar user={currentUser} size="sm" />
+          <Avatar user={user} size="sm" />
           <span>프로필</span>
         </NavLink>
       </nav>

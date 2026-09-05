@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { currentUser } from '../../data/mock'
+import { useAuth } from '../../auth/AuthContext'
 import {
   CreateIcon,
   HomeIcon,
@@ -17,6 +17,9 @@ const links = [
 ]
 
 export function BottomNav() {
+  const { user } = useAuth()
+  if (!user) return null
+
   return (
     <nav className="bottom-nav" aria-label="모바일">
       {links.map(({ to, icon: Icon, end, label }) => (
@@ -39,7 +42,7 @@ export function BottomNav() {
           `bottom-nav__link${isActive ? ' bottom-nav__link--active' : ''}`
         }
       >
-        <Avatar user={currentUser} size="sm" />
+        <Avatar user={user} size="sm" />
       </NavLink>
     </nav>
   )

@@ -20,7 +20,9 @@ export function Stories({ items }: StoriesProps) {
                 seen={!story.hasUnseen}
               />
               <span className="stories__name">
-                {story.user.id === 'me' ? '내 스토리' : story.user.username}
+                {story.id === 's-me' || story.user.id === 'me'
+                  ? '내 스토리'
+                  : story.user.username}
               </span>
             </button>
           </li>

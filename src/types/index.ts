@@ -4,6 +4,7 @@ export type User = {
   displayName: string
   avatarUrl: string
   bio?: string
+  email?: string
   postsCount: number
   followersCount: number
   followingCount: number
@@ -32,4 +33,22 @@ export type ExploreItem = {
   imageUrl: string
   likes: number
   commentsCount: number
+}
+
+export type AuthTokenResponse = {
+  access_token: string
+  token_type: 'bearer'
+  user: User
+}
+
+export type LoginPayload = {
+  username: string
+  password: string
+}
+
+export type SignupPayload = {
+  username: string
+  email: string
+  password: string
+  display_name: string
 }

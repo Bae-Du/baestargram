@@ -1,5 +1,6 @@
-import { currentUser, profilePosts } from '../data/mock'
+import { useAuth } from '../auth/AuthContext'
 import { Avatar } from '../components/common/Avatar'
+import { profilePosts } from '../data/mock'
 import './ProfilePage.css'
 
 function formatCount(n: number) {
@@ -7,30 +8,36 @@ function formatCount(n: number) {
 }
 
 export function ProfilePage() {
+  const { user, logout } = useAuth()
+  if (!user) return null
+
   return (
     <div className="profile-page">
       <header className="profile-page__header">
-        <Avatar user={currentUser} size="xl" />
+        <Avatar user={user} size="xl" />
         <div className="profile-page__info">
           <div className="profile-page__top">
-            <h1 className="profile-page__username">{currentUser.username}</h1>
+            <h1 className="profile-page__username">{user.username}</h1>
             <button type="button" className="profile-page__edit">
               프로필 편집
+            </button>
+            <button type="button" className="profile-page__edit" onClick={logout}>
+              로그아웃
             </button>
           </div>
           <ul className="profile-page__stats">
             <li>
-              <strong>{formatCount(currentUser.postsCount)}</strong> 게시물
+              <strong>{formatCount(user.postsCount)}</strong> 게시물
             </li>
             <li>
-              <strong>{formatCount(currentUser.followersCount)}</strong> 팔로워
+              <strong>{formatCount(user.followersCount)}</strong> 팔로워
             </li>
             <li>
-              <strong>{formatCount(currentUser.followingCount)}</strong> 팔로우
+              <strong>{formatCount(user.followingCount)}</strong> 팔로우
             </li>
           </ul>
-          <p className="profile-page__name">{currentUser.displayName}</p>
-          <p className="profile-page__bio">{currentUser.bio}</p>
+          <p className="profile-page__name">{user.displayName}</p>
+          <p className="profile-page__bio">{user.bio}</p>
         </div>
       </header>
 
