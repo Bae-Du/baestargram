@@ -15,23 +15,41 @@ export function SignupPage() {
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
+  const trimmedEmail = email.trim()
+  const trimmedUsername = username.trim()
+  const trimmedDisplayName = displayName.trim()
   const canSubmit =
-    email.trim().length > 0 &&
-    username.trim().length > 0 &&
-    password.length > 0 &&
+    trimmedEmail.length > 0 &&
+    trimmedUsername.length >= 3 &&
+    trimmedUsername.length <= 30 &&
+    password.length >= 8 &&
     !submitting
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault()
-    if (!canSubmit) return
+    if (submitting) return
+
+    if (trimmedUsername.length < 3 || trimmedUsername.length > 30) {
+      setError('사용자 이름은 3–30자여야 해요.')
+      return
+    }
+    if (password.length < 8) {
+      setError('비밀번호는 8자 이상이어야 해요.')
+      return
+    }
+    if (!trimmedEmail.includes('@')) {
+      setError('올바른 이메일을 입력해 주세요.')
+      return
+    }
+
     setError('')
     setSubmitting(true)
     try {
       await signup({
-        email,
-        username,
+        email: trimmedEmail,
+        username: trimmedUsername,
         password,
-        display_name: displayName,
+        display_name: trimmedDisplayName || trimmedUsername,
       })
       navigate('/', { replace: true })
     } catch (err) {

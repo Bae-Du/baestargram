@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { AuthLayout } from '../components/auth/AuthLayout'
 import { useAuth } from '../auth/AuthContext'
+import { isApiConfigured } from '../api/client'
 
 export function LoginPage() {
   const { login } = useAuth()
@@ -74,12 +75,16 @@ export function LoginPage() {
         </button>
         {error ? <p className="auth-error">{error}</p> : null}
       </form>
-      <div className="auth-divider">또는</div>
-      <p className="auth-hint">
-        FastAPI 연결 전에는 목업 계정으로 로그인돼요.
-        <br />
-        비밀번호는 6자 이상이면 됩니다.
-      </p>
+      {!isApiConfigured() ? (
+        <>
+          <div className="auth-divider">또는</div>
+          <p className="auth-hint">
+            FastAPI 연결 전에는 목업 계정으로 로그인돼요.
+            <br />
+            비밀번호는 6자 이상이면 됩니다.
+          </p>
+        </>
+      ) : null}
     </AuthLayout>
   )
 }
