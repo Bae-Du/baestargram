@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import type { Post, PostComment } from '../../types'
 import { createComment, listComments } from '../../api/comments'
+import { likePost, unlikePost } from '../../api/likes'
 import { Avatar } from '../common/Avatar'
 import {
   BookmarkIcon,
@@ -33,6 +34,7 @@ export function PostCard({ post, token }: PostCardProps) {
   const [loadingComments, setLoadingComments] = useState(false)
   const [commentError, setCommentError] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const [likeBusy, setLikeBusy] = useState(false)
 
   useEffect(() => {
     if (!commentsOpen) return
@@ -65,11 +67,24 @@ export function PostCard({ post, token }: PostCardProps) {
     repliesByParent.set(comment.parentId, list)
   }
 
-  const toggleLike = () => {
-    setLiked((prev) => {
-      setLikes((count) => (prev ? count - 1 : count + 1))
-      return !prev
-    })
+  const toggleLike = async () => {
+    if (!token || likeBusy) return
+    const nextLiked = !liked
+    setLiked(nextLiked)
+    setLikes((count) => count + (nextLiked ? 1 : -1))
+    setLikeBusy(true)
+    try {
+      const result = nextLiked
+        ? await likePost(token, post.id)
+        : await unlikePost(token, post.id)
+      setLiked(result.liked)
+      setLikes(result.like_count)
+    } catch {
+      setLiked(!nextLiked)
+      setLikes((count) => count + (nextLiked ? -1 : 1))
+    } finally {
+      setLikeBusy(false)
+    }
   }
 
   const onSubmitComment = async (event: FormEvent) => {
@@ -112,7 +127,14 @@ export function PostCard({ post, token }: PostCardProps) {
       </header>
 
       <div className="post__media">
-        <img src={post.imageUrl} alt="" loading="lazy" />
+        <img
+          src={post.imageUrl}
+          alt=""
+          loading="lazy"
+          onDoubleClick={() => {
+            if (!liked) void toggleLike()
+          }}
+        />
       </div>
 
       <div className="post__actions">
