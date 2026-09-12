@@ -77,3 +77,23 @@ export async function createPost(
   )
   return mapApiPost(data)
 }
+
+export async function updatePost(
+  token: string,
+  postId: string,
+  caption: string,
+): Promise<Post> {
+  const data = await apiRequest<ApiPost>(
+    `/api/v1/posts/${postId}`,
+    {
+      method: 'PATCH',
+      body: JSON.stringify({ caption }),
+    },
+    token,
+  )
+  return mapApiPost(data)
+}
+
+export async function deletePost(token: string, postId: string): Promise<void> {
+  await apiRequest(`/api/v1/posts/${postId}`, { method: 'DELETE' }, token)
+}

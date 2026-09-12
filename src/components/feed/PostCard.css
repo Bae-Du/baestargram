@@ -214,3 +214,82 @@
   color: #ed4956;
   font-size: 0.8125rem;
 }
+
+.post__edit textarea {
+  width: 100%;
+  resize: vertical;
+  border: 1px solid var(--ig-border);
+  border-radius: 4px;
+  padding: 8px 10px;
+  font: inherit;
+  font-size: 0.875rem;
+  outline: none;
+}
+
+.post__edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.post__edit-actions button {
+  border: none;
+  background: transparent;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.post__edit-actions button:last-child {
+  color: var(--ig-link);
+}
+
+.post-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.post-sheet__card {
+  width: min(400px, 100%);
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.post-sheet__lead {
+  margin: 0;
+  padding: 20px 16px 8px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.post-sheet__item {
+  width: 100%;
+  border: none;
+  border-top: 1px solid var(--ig-border);
+  background: #fff;
+  padding: 14px 16px;
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.post-sheet__item--danger {
+  color: #ed4956;
+  font-weight: 700;
+}
+
+.post-sheet__error {
+  margin: 0;
+  padding: 10px 16px 16px;
+  color: #ed4956;
+  font-size: 0.8125rem;
+  text-align: center;
+}

@@ -1,7 +1,8 @@
 import { useEffect, useState, type FormEvent } from 'react'
-import type { Post, PostComment } from '../../types'
+import type { Post, PostComment, User } from '../../types'
 import { createComment, listComments } from '../../api/comments'
 import { likePost, unlikePost } from '../../api/likes'
+import { deletePost, updatePost } from '../../api/posts'
 import { Avatar } from '../common/Avatar'
 import {
   BookmarkIcon,
@@ -15,16 +16,29 @@ import './PostCard.css'
 type PostCardProps = {
   post: Post
   token: string | null
+  currentUser?: User | null
+  onDeleted?: (postId: string) => void
 }
 
 function formatCount(n: number) {
   return n.toLocaleString('ko-KR')
 }
 
-export function PostCard({ post, token }: PostCardProps) {
+export function PostCard({ post, token, currentUser, onDeleted }: PostCardProps) {
   const [liked, setLiked] = useState(Boolean(post.liked))
   const [saved, setSaved] = useState(Boolean(post.saved))
   const [likes, setLikes] = useState(post.likes)
+  const [caption, setCaption] = useState(post.caption)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [confirmDelete, setConfirmDelete] = useState(false)
+  const [editing, setEditing] = useState(false)
+  const [editDraft, setEditDraft] = useState(post.caption)
+  const [menuError, setMenuError] = useState('')
+  const [menuBusy, setMenuBusy] = useState(false)
+  const isOwner = Boolean(
+    currentUser &&
+      (currentUser.id === post.user.id || currentUser.username === post.user.username),
+  )
   const [commentsOpen, setCommentsOpen] = useState(false)
   const [comments, setComments] = useState<PostComment[]>([])
   const [commentsCount, setCommentsCount] = useState(post.commentsCount)
@@ -111,6 +125,52 @@ export function PostCard({ post, token }: PostCardProps) {
     }
   }
 
+  const closeMenu = () => {
+    setMenuOpen(false)
+    setConfirmDelete(false)
+    setMenuError('')
+  }
+
+  const copyLink = async () => {
+    const url = `${window.location.origin}/?p=${post.id}`
+    try {
+      await navigator.clipboard.writeText(url)
+      closeMenu()
+    } catch {
+      setMenuError('링크를 복사하지 못했어요.')
+    }
+  }
+
+  const onSaveCaption = async () => {
+    if (!token || menuBusy) return
+    setMenuBusy(true)
+    setMenuError('')
+    try {
+      const updated = await updatePost(token, post.id, editDraft.trim())
+      setCaption(updated.caption)
+      setEditing(false)
+    } catch (err) {
+      setMenuError(err instanceof Error ? err.message : '수정하지 못했어요.')
+    } finally {
+      setMenuBusy(false)
+    }
+  }
+
+  const onDeletePost = async () => {
+    if (!token || menuBusy) return
+    setMenuBusy(true)
+    setMenuError('')
+    try {
+      await deletePost(token, post.id)
+      closeMenu()
+      onDeleted?.(post.id)
+    } catch (err) {
+      setMenuError(err instanceof Error ? err.message : '삭제하지 못했어요.')
+    } finally {
+      setMenuBusy(false)
+    }
+  }
+
   return (
     <article className="post">
       <header className="post__header">
@@ -121,7 +181,16 @@ export function PostCard({ post, token }: PostCardProps) {
             <p className="post__time">{post.createdAt}</p>
           </div>
         </div>
-        <button type="button" className="post__more" aria-label="더보기">
+        <button
+          type="button"
+          className="post__more"
+          aria-label="더보기"
+          onClick={() => {
+            setMenuOpen(true)
+            setConfirmDelete(false)
+            setMenuError('')
+          }}
+        >
           <MoreIcon className="post__action-icon" />
         </button>
       </header>
@@ -171,9 +240,26 @@ export function PostCard({ post, token }: PostCardProps) {
 
       <div className="post__body">
         <p className="post__likes">좋아요 {formatCount(likes)}개</p>
-        {post.caption ? (
+        {editing ? (
+          <div className="post__edit">
+            <textarea
+              value={editDraft}
+              onChange={(e) => setEditDraft(e.target.value)}
+              maxLength={2200}
+              rows={3}
+            />
+            <div className="post__edit-actions">
+              <button type="button" onClick={() => setEditing(false)} disabled={menuBusy}>
+                취소
+              </button>
+              <button type="button" onClick={() => void onSaveCaption()} disabled={menuBusy}>
+                {menuBusy ? '저장 중...' : '완료'}
+              </button>
+            </div>
+          </div>
+        ) : caption ? (
           <p className="post__caption">
-            <span className="post__username">{post.user.username}</span> {post.caption}
+            <span className="post__username">{post.user.username}</span> {caption}
           </p>
         ) : null}
         <button
@@ -275,6 +361,66 @@ export function PostCard({ post, token }: PostCardProps) {
         </button>
       </form>
       {commentError ? <p className="post__comment-error">{commentError}</p> : null}
+
+      {menuOpen ? (
+        <div className="post-sheet" onClick={closeMenu} role="presentation">
+          <div
+            className="post-sheet__card"
+            role="dialog"
+            aria-label="게시물 옵션"
+            onClick={(event) => event.stopPropagation()}
+          >
+            {confirmDelete ? (
+              <>
+                <p className="post-sheet__lead">이 게시물을 삭제할까요?</p>
+                <button
+                  type="button"
+                  className="post-sheet__item post-sheet__item--danger"
+                  onClick={() => void onDeletePost()}
+                  disabled={menuBusy}
+                >
+                  {menuBusy ? '삭제 중...' : '삭제'}
+                </button>
+                <button type="button" className="post-sheet__item" onClick={() => setConfirmDelete(false)}>
+                  취소
+                </button>
+              </>
+            ) : (
+              <>
+                {isOwner ? (
+                  <>
+                    <button
+                      type="button"
+                      className="post-sheet__item"
+                      onClick={() => {
+                        setEditDraft(caption)
+                        setEditing(true)
+                        closeMenu()
+                      }}
+                    >
+                      수정
+                    </button>
+                    <button
+                      type="button"
+                      className="post-sheet__item post-sheet__item--danger"
+                      onClick={() => setConfirmDelete(true)}
+                    >
+                      삭제
+                    </button>
+                  </>
+                ) : null}
+                <button type="button" className="post-sheet__item" onClick={() => void copyLink()}>
+                  링크 복사
+                </button>
+                <button type="button" className="post-sheet__item" onClick={closeMenu}>
+                  취소
+                </button>
+              </>
+            )}
+            {menuError ? <p className="post-sheet__error">{menuError}</p> : null}
+          </div>
+        </div>
+      ) : null}
     </article>
   )
 }

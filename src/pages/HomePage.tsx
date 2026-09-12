@@ -60,7 +60,13 @@ export function HomePage() {
           </p>
         ) : null}
         {posts.map((post) => (
-          <PostCard key={post.id} post={post} token={token} />
+          <PostCard
+            key={post.id}
+            post={post}
+            token={token}
+            currentUser={user}
+            onDeleted={(postId) => setPosts((items) => items.filter((item) => item.id !== postId))}
+          />
         ))}
       </div>
     </div>
