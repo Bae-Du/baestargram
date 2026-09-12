@@ -1,0 +1,85 @@
+.create-page {
+  max-width: 520px;
+  margin: 32px auto;
+  padding: 0 16px 40px;
+}
+
+.create-page__card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: #fff;
+  border: 1px solid var(--ig-border);
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.create-page__card h1 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.create-page__drop {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+  background: var(--ig-bg-secondary);
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  color: var(--ig-text-secondary);
+  font-weight: 600;
+}
+
+.create-page__drop img {
+  width: 100%;
+  height: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  display: block;
+}
+
+.create-page__drop input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.create-page__caption {
+  width: 100%;
+  resize: vertical;
+  border: 1px solid var(--ig-border);
+  border-radius: 4px;
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 0.875rem;
+  outline: none;
+}
+
+.create-page__card button {
+  border: none;
+  border-radius: 8px;
+  background: var(--ig-link);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.create-page__card button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.create-page__error {
+  margin: 0;
+  color: #ed4956;
+  font-size: 0.875rem;
+  text-align: center;
+}

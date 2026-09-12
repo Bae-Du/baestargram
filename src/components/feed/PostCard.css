@@ -105,3 +105,112 @@
   font-size: 0.875rem;
   cursor: pointer;
 }
+
+.post__comments {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.post__thread {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.post__comment-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.post__comment-row--reply {
+  margin-left: 18px;
+}
+
+.post__comment,
+.post__comment-status {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.post__reply-btn,
+.post__replies-toggle {
+  border: none;
+  background: transparent;
+  padding: 0;
+  color: var(--ig-text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.post__replies-toggle {
+  align-self: flex-start;
+  margin: 2px 0 4px 18px;
+}
+
+.post__replying {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 8px 8px 0;
+  font-size: 0.75rem;
+  color: var(--ig-text-secondary);
+}
+
+.post__replying button {
+  border: none;
+  background: transparent;
+  color: var(--ig-text);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.post__comment-status {
+  color: var(--ig-text-secondary);
+}
+
+.post__composer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 8px 8px 0;
+  border-top: 1px solid var(--ig-border);
+}
+
+.post__composer input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  font-size: 0.875rem;
+  padding: 8px 0;
+}
+
+.post__composer button {
+  border: none;
+  background: transparent;
+  color: var(--ig-link);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.post__composer button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.post__comment-error {
+  margin: 6px 8px 0;
+  color: #ed4956;
+  font-size: 0.8125rem;
+}

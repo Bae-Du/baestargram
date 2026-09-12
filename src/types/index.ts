@@ -28,6 +28,15 @@ export type Post = {
   saved?: boolean
 }
 
+export type PostComment = {
+  id: string
+  postId: string
+  parentId: string | null
+  content: string
+  createdAt: string
+  user: User
+}
+
 export type ExploreItem = {
   id: string
   imageUrl: string

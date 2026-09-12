@@ -25,6 +25,22 @@
   padding: 0 0 24px;
 }
 
+.home-page__status {
+  margin: 24px 8px;
+  color: var(--ig-text-secondary);
+  font-size: 0.875rem;
+}
+
+.home-page__status--error {
+  color: #ed4956;
+}
+
+.home-page__status a {
+  color: var(--ig-link);
+  font-weight: 600;
+  text-decoration: none;
+}
+
 @media (max-width: 767px) {
   .home-page__mobile-header {
     display: block;

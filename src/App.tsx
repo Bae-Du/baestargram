@@ -5,6 +5,7 @@ import { AppLayout } from './components/layout/AppLayout'
 import { ExplorePage } from './pages/ExplorePage'
 import { HomePage } from './pages/HomePage'
 import { LoginPage } from './pages/LoginPage'
+import { CreatePage } from './pages/CreatePage'
 import { PlaceholderPage } from './pages/PlaceholderPage'
 import { ProfilePage } from './pages/ProfilePage'
 import { SignupPage } from './pages/SignupPage'
@@ -41,15 +42,7 @@ export default function App() {
                   />
                 }
               />
-              <Route
-                path="create"
-                element={
-                  <PlaceholderPage
-                    title="새 게시물"
-                    description="게시물 작성 UI는 곧 추가될 예정이에요."
-                  />
-                }
-              />
+              <Route path="create" element={<CreatePage />} />
               <Route path="profile" element={<ProfilePage />} />
             </Route>
           </Route>

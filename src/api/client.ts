@@ -4,6 +4,12 @@ export function isApiConfigured() {
   return BASE_URL.length > 0
 }
 
+export function resolveMediaUrl(url: string) {
+  if (!url) return url
+  if (/^https?:\/\//i.test(url)) return url
+  return `${BASE_URL}${url.startsWith('/') ? url : `/${url}`}`
+}
+
 type ApiErrorBody = {
   detail?: string | { msg?: string }[]
 }
@@ -24,10 +30,18 @@ function readErrorMessage(body: ApiErrorBody, fallback: string) {
   return fallback
 }
 
-export async function apiRequest<T>(path: string, init: RequestInit = {}): Promise<T> {
+export async function apiRequest<T>(
+  path: string,
+  init: RequestInit = {},
+  token?: string | null,
+): Promise<T> {
   const headers = new Headers(init.headers)
-  if (init.body && !headers.has('Content-Type')) {
+  const isFormData = typeof FormData !== 'undefined' && init.body instanceof FormData
+  if (init.body && !isFormData && !headers.has('Content-Type')) {
     headers.set('Content-Type', 'application/json')
+  }
+  if (token) {
+    headers.set('Authorization', `Bearer ${token}`)
   }
 
   const response = await fetch(`${BASE_URL}${path}`, {

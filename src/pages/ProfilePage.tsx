@@ -1,6 +1,10 @@
+import { useEffect, useState } from 'react'
 import { useAuth } from '../auth/AuthContext'
+import { listPosts } from '../api/posts'
+import { isApiConfigured } from '../api/client'
 import { Avatar } from '../components/common/Avatar'
-import { profilePosts } from '../data/mock'
+import { profilePosts as mockProfilePosts } from '../data/mock'
+import type { Post } from '../types'
 import './ProfilePage.css'
 
 function formatCount(n: number) {
@@ -8,7 +12,30 @@ function formatCount(n: number) {
 }
 
 export function ProfilePage() {
-  const { user, logout } = useAuth()
+  const { user, token, logout } = useAuth()
+  const [posts, setPosts] = useState<Post[]>([])
+
+  useEffect(() => {
+    if (!user) return
+    if (!isApiConfigured()) {
+      setPosts(
+        mockProfilePosts.map((item) => ({
+          id: item.id,
+          user,
+          imageUrl: item.imageUrl,
+          caption: '',
+          likes: item.likes,
+          commentsCount: item.commentsCount,
+          createdAt: '',
+        })),
+      )
+      return
+    }
+    listPosts(token, user.username)
+      .then(setPosts)
+      .catch(() => setPosts([]))
+  }, [token, user])
+
   if (!user) return null
 
   return (
@@ -27,7 +54,7 @@ export function ProfilePage() {
           </div>
           <ul className="profile-page__stats">
             <li>
-              <strong>{formatCount(user.postsCount)}</strong> 게시물
+              <strong>{formatCount(posts.length)}</strong> 게시물
             </li>
             <li>
               <strong>{formatCount(user.followersCount)}</strong> 팔로워
@@ -54,7 +81,7 @@ export function ProfilePage() {
       </div>
 
       <div className="profile-page__grid">
-        {profilePosts.map((post) => (
+        {posts.map((post) => (
           <button key={post.id} type="button" className="profile-page__cell">
             <img src={post.imageUrl} alt="" loading="lazy" />
           </button>
